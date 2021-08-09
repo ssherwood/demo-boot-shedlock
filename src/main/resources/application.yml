@@ -1,0 +1,14 @@
+server:
+  port: ${random.int(8000,9000)}
+
+spring:
+  jpa:
+    open-in-view: false
+    show-sql: true
+  profiles:
+    default: yugabyte
+
+logging:
+  level:
+    net.javacrumbs.shedlock: DEBUG
+    org.springframework.transaction.interceptor: TRACE

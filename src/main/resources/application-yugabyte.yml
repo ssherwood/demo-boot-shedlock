@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:5433/yugabyte
+    username: yugabyte
+    hikari:
+      transaction-isolation: 4
+      # ^ https://github.com/brettwooldridge/HikariCP/blob/dev/src/main/java/com/zaxxer/hikari/util/IsolationLevel.java
+      #
+      # NOTE: Yugabyte only supports 4 and 8 as of today (4 is the default)...
+      #    4 (repeatable read/snapshot) seems to have some issues causing the postgres driver to raise a transaction exception
+      #    8 (serializable) seems to solve that issue...
