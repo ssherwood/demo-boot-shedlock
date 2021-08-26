@@ -1,6 +1,7 @@
 package io.undertree.demo.shedlock;
 
 import lombok.extern.slf4j.Slf4j;
+import net.javacrumbs.shedlock.core.LockAssert;
 import net.javacrumbs.shedlock.core.LockProvider;
 import net.javacrumbs.shedlock.provider.jdbctemplate.JdbcTemplateLockProvider;
 import net.javacrumbs.shedlock.spring.annotation.EnableSchedulerLock;
