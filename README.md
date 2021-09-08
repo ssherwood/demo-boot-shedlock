@@ -3,6 +3,14 @@
 This is a simple Spring Boot demo application using Shedlock to explore some subtle differences in transaction
 isolation between Yugabyte (YSQL) and a vanilla JDBC datasource (in this example, Postgres).
 
+## UPDATE
+
+Per the [issue](https://github.com/lukas-krecan/ShedLock/issues/207) that I opened with Shedlock, the 4.27.0 release
+has a customizable isolation level.  As long as the lockProvider is configured with SERIALIZABLE, all the errors
+documented below go away.
+
+---
+
 ## Project Setup
 
 This project is configured to connect to either a Yugabyte or Postgres instance at the default localhost and port
@@ -137,4 +145,3 @@ CREATE TABLE shedlock (
 This does not appear to change any database error behavior.  Most instances appear to get the `Operation failed. Try again.`
 but in several iterations the `Operation expired` error was still observable.  However, since the Shedlock table is
 designed to be a single row, using 1 tablet is a reasonable optimization.
-

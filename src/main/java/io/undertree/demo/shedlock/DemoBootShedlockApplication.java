@@ -1,7 +1,6 @@
 package io.undertree.demo.shedlock;
 
 import lombok.extern.slf4j.Slf4j;
-import net.javacrumbs.shedlock.core.LockAssert;
 import net.javacrumbs.shedlock.core.LockProvider;
 import net.javacrumbs.shedlock.provider.jdbctemplate.JdbcTemplateLockProvider;
 import net.javacrumbs.shedlock.spring.annotation.EnableSchedulerLock;
@@ -18,6 +17,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
 
 @SpringBootApplication
 public class DemoBootShedlockApplication {
@@ -35,7 +35,8 @@ public class DemoBootShedlockApplication {
             return new JdbcTemplateLockProvider(
                     JdbcTemplateLockProvider.Configuration.builder()
                             .withJdbcTemplate(new JdbcTemplate(dataSource))
-                            .usingDbTime() // Works on Postgres, MySQL, MariaDb, MS SQL, Oracle, DB2, HSQL and H2
+                            .withIsolationLevel(Connection.TRANSACTION_SERIALIZABLE)
+                            .usingDbTime()
                             .build()
             );
         }
@@ -51,11 +52,6 @@ public class DemoBootShedlockApplication {
         }
 
         // issues:  https://github.com/lukas-krecan/ShedLock/issues/207
-
-        // NOTEs
-        // - it looks like the shedlock lock test actually happens outside this invocation, so there
-        //   isn't a way to set isolation here that will really solve the problem...
-        //   may have to look at customizing DefaultLockingTaskExecutor
 
         @Scheduled(cron = "0 * * * * *") // run at the top of every minute
         @SchedulerLock(name = "TaskScheduler_scheduledTask", lockAtLeastFor = "30s", lockAtMostFor = "50s")

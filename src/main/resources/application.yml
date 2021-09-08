@@ -10,7 +10,8 @@ spring:
 
 logging:
   level:
-    com.zaxxer.hikari: TRACE
+    #org.postgresql: DEBUG
+    #com.zaxxer.hikari: TRACE
     com.zaxxer.hikari.HikariConfig: DEBUG
     net.javacrumbs.shedlock: DEBUG
     org.springframework.transaction.interceptor: TRACE
